@@ -8,6 +8,7 @@ import com.springboot.blog.springboot_blog_rest_api.repository.PostRepository;
 import com.springboot.blog.springboot_blog_rest_api.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,9 +36,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getAllPosts(int pageNo, int pageSize) {
+    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+
+        // check if the request want to sort by asc or des by Sort object
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+            :  Sort.by(sortBy).descending();
+
         // create pageable instance
-        PageRequest pageable = PageRequest.of(pageNo, pageSize);
+        PageRequest pageable = PageRequest.of(pageNo,pageSize,sort);
         //List<Post> posts = postRepository.findAll();// pageable return Page not List so we chane list if we use pageable
 
 
