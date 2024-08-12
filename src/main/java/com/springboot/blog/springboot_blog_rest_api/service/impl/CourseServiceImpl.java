@@ -41,14 +41,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDto findById(Long id) {
-        Course coursebyId = courseRepository.findById(id).orElseThrow();
+        Course coursebyId = courseRepository.findById(id).orElseThrow(()->new CourseError("not found course"));
         CourseDto courseId = mapToDto(coursebyId);
         return courseId;
     }
 
     @Override
     public CourseDto updateCourse(CourseDto courseDto, Long id) {
-        Course course = courseRepository.findById(id).orElseThrow();
+        Course course = courseRepository.findById(id).orElseThrow(()->new CourseError("not found the course to update it"));
            course.setName(courseDto.getName());
            course.setLevel(courseDto.getLevel());
            course.setTeacherName(courseDto.getTeacherName());
@@ -61,7 +61,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void deleteCourse(Long id) {
-        Course course = courseRepository.findById(id).orElseThrow();
+        Course course = courseRepository.findById(id).orElseThrow(()->new CourseError("not found the course to delete it"));
         courseRepository.delete(course);
     }
 
